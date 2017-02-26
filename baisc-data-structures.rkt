@@ -14,12 +14,58 @@
 ; INTERPRETATION: The idea is that we need to have a structure that associates the image with its
 ; edges.
 
-; Constructs a Sprite from a list of points (auto-generates the Inequalities for the edges)
+; Constructs a Sprite from a list of points in order by conection(auto-generates the Inequalities for the edges)
 ; make-sprite-from-points: Image [Listof Posns] -> Sprite
 (define (make-sprite-from-points)
   ;TODO -- Write function
   
   #false)
+  
+; convex? : Posn Posm Posn -> Boolean
+; is the angle /_ posnA posnB posnC les than 180 going counter clockwise?
+; calculates by determining if the cross product BA X BC is positive in the Z
+; ... direction where BA and BC are vectors in 3 space with Z = 0
+
+(define (convex? posnA posnB posnC)
+  (local [; disp-vec : Posn Posn -> Posn
+          ; makes displacement vector posn1 - posn2.
+          (define (disp-vec posn1 posn2) (make-posn (- (posn-x posn1)
+                                                       (posn-x posn2))
+                                                    (- (posn-y posn1)
+                                                       (posn-y posn2))))
+          (define vecBA (disp-vec posnA posnB))
+          (define vecBC (disp-vec posnC posnB))
+          (define vecBA_X_vecBC (- (* (posn-x vecBA) (posn-y vecBC))
+                                   (* (posn-y vecBA) (posn-x vecBC))))]
+    (cond [(zero?     vecBA_X_vecBC) (error "points are collinear")]
+          [(positive? vecBA_X_vecBC) #t]
+          [(negative? vecBA_X_vecBC) #f]
+          [else (error "something went wrong...")])))
+
+(check-expect (convex? (make-posn 1 0)
+                       (make-posn 0 0)
+                       (make-posn 0 1))
+              #t)
+(check-expect (convex? (make-posn -3 -1)
+                       (make-posn 0 0)
+                       (make-posn 2 -1))
+              #t)
+(check-expect (convex? (make-posn 1 0)
+                       (make-posn 0 0)
+                       (make-posn 2 -1))
+              #f)
+(check-expect (convex? (make-posn 1 0)
+                       (make-posn 0 0)
+                       (make-posn 0 -1))
+              #f)
+(check-error  (convex? (make-posn -1 0)
+                       (make-posn 1 4)
+                       (make-posn 5 12))
+              "points are collinear")
+
+
+
+                                                               
 
 ; An Inequality is one of these guys:
 (define-struct inequality [m b direction])
