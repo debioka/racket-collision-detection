@@ -5,9 +5,10 @@
 ; https://docs.racket-lang.org/guide/module-basics.html
 
 ; A Sprite is one of these guys:
-(define-struct sprite [image edges])
+(define-struct sprite [image loe])
 ; Where image is the actual Image that gets placed on a canvas
-; and edges is a [Listof Inequalitites] where each Inequality defines an edge of the image
+; - loes is a [List-of Edges]
+; - edges is a [List-of Inequalitites] where each Inequality defines an edge of the image
 ;
 ; INTERPRETATION: The idea is that we need to have a structure that associates the image with its
 ; edges.
