@@ -5,11 +5,12 @@
 ; https://docs.racket-lang.org/guide/module-basics.html
 
 ; A Sprite is one of these guys:
-(define-struct sprite [image loe])
+(define-struct sprite [image loe center])
 ; Where image is the actual Image that gets placed on a canvas
 ; - loes is a [List-of Edges]
-; - edges is a [List-of Inequalitites] where each Inequality defines an edge of the image
-;
+; - edges is a [List-of Inequalitites] where each Inequality defines an edge of the image parameteried by the center of the image
+; - center is some arbitrary point to use as refrence. It is best
+
 ; INTERPRETATION: The idea is that we need to have a structure that associates the image with its
 ; edges.
 
@@ -23,7 +24,7 @@
 ; An Inequality is one of these guys:
 (define-struct inequality [m b direction])
 ; Where m represents the slope of the line equation
-; and b represents the y-intercept of the equation
+; and b is a [posn -> posn] and generate the y-intercept of the equation based on the position of the center
 ; and direction is one of the following functions:
 ;    - >
 ;    - >=
