@@ -18,6 +18,20 @@
 #;
 (define (split-shape lop)
   (local [(define perim (make-perimiter lop)) ; perimeter of shape
+          ;; find-concave : perim -> Nat
+          ;; index of first concave
+          (define (find-concave perim) ...)
+
+          ;; cycle-list : nat [List-of X] -> [List-of X]
+          ;; cylces perim so nat'th element is first ellement
+          ;; example: (cycle-list : 2 (list 1 2 3 4)) -> (list 3 4 0 1 2)
+          (define (cycle-list n lst) ...)
+
+          ;; one-path : perim -> perim perim
+          ;; cuts on concave section off starting with the first angle
+          (define (one-path perim))
+
+          ;; recur until find-concave is false forever or something
    ....]))
 
 
